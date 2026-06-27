@@ -27,6 +27,7 @@ Only **two** values are required. Everything else has a sensible default.
 | Variable            | Default     | What it does                                                                                                |
 | ------------------- | ----------- | ---------------------------------------------------------------------------------------------------------- |
 | `ARCHIVE_HOST_PATH` | `./archive` | Host path where **game backups + archived cover/poster/background art** are written. Point at a big disk / NAS share. Created on first run. The worker writes here; the api reads it (read-only) to stream restores. |
+| `DB_HOST_PATH`      | `./db`      | Host path for the **PostgreSQL data dir** (library metadata + your encrypted GOG tokens). Small but precious — back it up. Created on first run; Postgres stores under a `pgdata/` subdir of it. |
 
 ## Database (optional)
 
@@ -51,9 +52,9 @@ Only **two** values are required. Everything else has a sensible default.
 ## Where your data lives
 
 - **Your archive** (`ARCHIVE_HOST_PATH`) — the part you care about. Back it up independently.
-- **Database & Redis** — Docker **named volumes** (`gog-vault_db-data`, `gog-vault_redis-data`). The
-  database holds your library metadata and your encrypted GOG tokens.
+- **Database** (`DB_HOST_PATH`, default `./db`) — a host folder holding your library metadata and your
+  encrypted GOG tokens. Small but precious; back it up.
+- **Redis** — a Docker **named volume** (`gog-vault_redis-data`), transient queue/progress state.
 
-`docker compose down` keeps both the named volumes and your archive; `docker compose down -v` would
-**delete the named volumes** (database + Redis) — your `ARCHIVE_HOST_PATH` is a host folder and is not
-touched by `-v`.
+`docker compose down` keeps everything; `docker compose down -v` deletes only the **Redis** named volume
+now — your `ARCHIVE_HOST_PATH` and `DB_HOST_PATH` are host folders and are **not** touched by `-v`.

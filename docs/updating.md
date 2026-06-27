@@ -5,14 +5,14 @@
 > guaranteed downgrade. Before upgrading (especially across a version that changes the schema):
 >
 > 1. **Back up your archive** (`ARCHIVE_HOST_PATH`) — your installers + art, the irreplaceable part.
-> 2. **Back up the database volume** so you can roll back if a migration misbehaves:
+> 2. **Back up the database** (it's a host folder, `DB_HOST_PATH`, default `./db`) so you can roll back
+>    if a migration misbehaves:
 >    ```bash
->    docker compose stop api worker
->    docker run --rm -v gog-vault_db-data:/v -v "$PWD":/out alpine \
->      tar czf /out/gv-db-backup.tgz -C /v .
->    docker compose start api worker
+>    docker compose stop                 # stop the stack so the copy is consistent
+>    tar czf gv-db-backup.tgz -C ./db .  # adjust ./db if you changed DB_HOST_PATH
+>    docker compose start
 >    ```
->    (Restore by extracting that archive back into a fresh `gog-vault_db-data` volume with the stack stopped.)
+>    (Restore by stopping the stack and extracting that archive back into the `DB_HOST_PATH` folder.)
 > 3. **Skim the [CHANGELOG](../CHANGELOG.md)** for the versions you're crossing.
 > 4. Prefer **pinning `GV_VERSION`** to a known-good tag and upgrading deliberately, rather than tracking
 >    `latest`.

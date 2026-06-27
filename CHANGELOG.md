@@ -8,6 +8,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > ⚠️ **Beta / pre-release (v0.x).** GOG Vault is still early and changing fast, and updates may include
 > **one-way database migrations**. Back up before upgrading — see [Updating](docs/updating.md).
 
+## [0.4.0] - 2026-06-28
+
+### Added
+
+- **Activity now shows a live download Queue — a built-in download manager.** While a backup is in flight,
+  the Activity page shows a **Queue** section at the top — the active scheduled run with its per-game
+  children (downloading → live progress bar + **Stop**, waiting → **Remove**) plus any standalone manual
+  backups/repairs, with a **Cancel run** action — sitting above your full job **History**. In-flight jobs
+  show only in the Queue (they're de-duplicated out of the History list, and reappear there once they
+  finish); when nothing is downloading the page is just the History list as before. The topbar "running"
+  pill and a new live **count badge on the Activity sidebar item** jump straight to it.
+- **Full progress visibility for scheduled backups.** A scheduled run that backs up your library now
+  shows exactly what it's doing: each game lights up on its **Library cover card** with a live download
+  bar (just like a manual backup), and a banner shows an **"X of Y"** count of games backed up so far.
+  The run also appears in **Activity** as a parent that expands to the per-game backups nested beneath it.
+- **Every queued game shows its status, not just the one downloading.** While a backup (manual batch or
+  scheduled run) works through your library, each game waiting its turn shows a **"queued"** badge on its
+  Library card — and on the nested **DLC rows in the game-detail popup** — turning into a live progress
+  bar when its turn comes. The status survives a page reload.
+- **Stop a running scheduled backup.** The run banner has a **Stop** button that cancels the whole run —
+  the in-progress game is stopped and the not-yet-started games are skipped. A single game that fails or
+  is stopped no longer aborts the rest of the run.
+
+### Changed
+
+- **A manual backup of a game that's already backing up is now coalesced** instead of starting a second,
+  redundant job — backups run one at a time, so the click simply rides the in-flight backup.
+- **A failed backup now clears its card** immediately (with a brief "failed" note) instead of leaving a
+  frozen progress bar until the next reload.
+- **The database now lives on a configurable host path** (`DB_HOST_PATH`, default `./db`) instead of an
+  opaque Docker named volume, so it's easy to find, back up, and snapshot. _Upgrading an existing
+  install:_ copy your old `gog-vault_db-data` volume contents into the new path before starting,
+  otherwise the database initializes empty (your data is still in the old volume).
+- **Game backups are now organized under an `archive/games/` subfolder**, keeping them cleanly separated
+  from archived art and UI assets. Existing archives are relocated automatically on the first start after
+  upgrading — no re-download needed.
+
+### Fixed
+
+- **Verify and Repair in the game-detail popup now show their result.** The check always ran, but its
+  outcome only appeared behind the popup — so it looked like nothing happened, and a Repair with nothing
+  to fix looked like it "canceled itself." The popup now shows the result inline above the actions: the
+  verify counts (ok / corrupt / missing), the backup·repair roll-up, or "nothing to do." A finished
+  Verify also no longer leaves the buttons briefly stuck on **Stop**.
+- **Verifying a partially-backed-up game no longer reports it as fully backed up.** If you stop a download
+  partway, Verify now correctly accounts for the files that were never downloaded, so the game stays
+  **Partial** instead of flipping to a misleading **Backed up**.
+- **A partially-backed-up game no longer offers Restore.** Restoring an incomplete backup would lay down a
+  broken install, so Restore is now disabled (with an explanation) until the backup is complete.
+- A schedule's **"next run" time no longer drifts when you use "Run now"** — a manual run is recorded
+  without disturbing the cron schedule's next occurrence.
+
 ## [0.3.0] - 2026-06-27
 
 ### Added

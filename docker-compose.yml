@@ -8,10 +8,11 @@
 #   2.  docker compose up -d
 #   3.  open http://<your-host>:8080  ->  connect your GOG account  ->  sync your library
 #
-# Pin a release with GV_VERSION=v0.1.0 in .env, or leave it on :latest.
-# Your game backups + archived art live under ARCHIVE_HOST_PATH (default ./archive); Postgres and
-# Redis data are in named volumes. ONLY the web UI port is published — db / redis / api stay on the
-# internal Docker network. The api + worker apply DB migrations automatically on boot.
+# Pin a release with GV_VERSION=v0.4.0 in .env, or leave it on :latest.
+# Your game backups + archived art live under ARCHIVE_HOST_PATH (default ./archive); the Postgres
+# data dir lives under DB_HOST_PATH (default ./db); Redis uses a named volume. ONLY the web UI port
+# is published — db / redis / api stay on the internal Docker network. The api + worker apply DB
+# migrations automatically on boot.
 name: gog-vault
 
 services:
@@ -22,8 +23,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-gogvault}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
       POSTGRES_DB: ${POSTGRES_DB:-gogvault}
+      # Subdir so Postgres owns a clean dir inside the bind mount (avoids lost+found/dotfile clashes).
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - db-data:/var/lib/postgresql/data
+      # Bind to a host path so the DB lives on a disk you choose and is easy to back up / snapshot.
+      - ${DB_HOST_PATH:-./db}:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-gogvault} -d ${POSTGRES_DB:-gogvault}']
       interval: 10s
@@ -105,5 +109,4 @@ services:
       retries: 5
 
 volumes:
-  db-data:
   redis-data:

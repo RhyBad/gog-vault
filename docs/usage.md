@@ -47,7 +47,16 @@ Once the stack is up and you've **connected your GOG account** (see
 ## Storage insights & activity
 
 - **Storage insights** show how much space your archive uses and where it's going.
-- The **Activity log** records syncs, backups, verifies, and repairs.
+- The **Activity** page is your **download manager** plus a full job history:
+  - While anything is downloading, a **Queue** appears at the top — the active scheduled run with each
+    game's live progress (**Stop** the one downloading, **Remove** the ones still waiting) plus any manual
+    backups, and a **Cancel run** button for the whole batch.
+  - Below it is your complete **History** of syncs, backups, verifies, and repairs. When nothing is
+    downloading, you just see History.
+  - A count badge on the **Activity** sidebar item and the **running** pill in the top bar both jump
+    straight here.
+- During a scheduled backup, every game also shows its status right on its **Library cover** — a live
+  progress bar for the one downloading and a **queued** badge for the ones waiting their turn.
 
 ## Settings
 

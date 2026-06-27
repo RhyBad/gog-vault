@@ -97,5 +97,5 @@ schedule so it runs on its own.
 ```bash
 docker compose stop     # stop (keeps data)
 docker compose start    # start again
-docker compose down     # stop and remove containers (named volumes + your archive are kept)
+docker compose down     # stop and remove containers (your db + archive folders and data are kept)
 ```

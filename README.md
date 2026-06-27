@@ -37,6 +37,8 @@ tablets too.
 
 - **Library sync** — your owned games, DLC, and packs, Plex-style (grouped or flat), with cover art.
 - **Backup & update detection** — download your installers; get told when GOG has a newer build.
+- **Built-in download manager** — watch every backup download live in an Activity **Queue**, see what's
+  waiting, follow per-game progress on each cover, and **stop a whole scheduled run** in one click.
 - **Integrity verify + repair** — checksums your archive and re-fetches anything corrupt or missing.
 - **Restore helper** — stream any archived file back out when you need it.
 - **Scheduler & notifications** — automatic syncs/backups, with webhook alerts.
@@ -132,8 +134,9 @@ Only **two** values are required; everything else has a sane default. Full refer
 | `POSTGRES_PASSWORD`  | **yes**  |      —      | Database password (internal to the stack).                    |
 | `APP_ENCRYPTION_KEY` | **yes**  |      —      | Base64 32-byte key encrypting your GOG tokens at rest.        |
 | `ARCHIVE_HOST_PATH`  |    no    | `./archive` | Where your backups + art are written — point at a big disk.   |
+| `DB_HOST_PATH`       |    no    |   `./db`    | Host path for the PostgreSQL data dir — small but precious.    |
 | `WEB_PORT`           |    no    |   `8080`    | Host port for the web UI.                                     |
-| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.1.0`) or track `latest`.              |
+| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.4.0`) or track `latest`.              |
 
 ---
 
@@ -141,8 +144,9 @@ Only **two** values are required; everything else has a sane default. Full refer
 
 - **Game backups + archived art** → `ARCHIVE_HOST_PATH` (default `./archive`). This is the data you care
   about — keep it on storage you control and back it up like any other archive.
-- **Database + Redis** → Docker named volumes. The database holds your library metadata and your
-  **encrypted** GOG tokens (AES-256-GCM with your `APP_ENCRYPTION_KEY`).
+- **Database** → `DB_HOST_PATH` (default `./db`) on the host — it holds your library metadata and your
+  **encrypted** GOG tokens (AES-256-GCM with your `APP_ENCRYPTION_KEY`). Small but precious; back it up.
+- **Redis** → a Docker named volume (transient queue/progress state).
 
 Only the web UI port is published; the database, Redis, and API stay on the internal Docker network.
 

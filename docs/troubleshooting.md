@@ -67,11 +67,12 @@ that versions GOG has already removed from your account can't be recovered.
 ### How do I completely reset?
 
 ```bash
-docker compose down -v     # removes the DB + Redis volumes (NOT your archive folder)
+docker compose down -v          # removes only the Redis named volume
+rm -rf ./db                      # delete the database (adjust if you changed DB_HOST_PATH)
 ```
 
-Your `ARCHIVE_HOST_PATH` is a host folder and is left alone. Bring it back up with `docker compose up -d`
-and reconnect GOG.
+Your `ARCHIVE_HOST_PATH` and `DB_HOST_PATH` are host folders, so `-v` leaves them alone — delete `./db`
+yourself for a full reset. Bring it back up with `docker compose up -d` and reconnect GOG.
 
 ---
 
