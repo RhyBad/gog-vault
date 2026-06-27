@@ -1,0 +1,15 @@
+# Force people through the structured forms (no empty blank issues).
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Question / setup help
+    url: https://github.com/rhybad/gog-vault/discussions/categories/q-a
+    about: Not a bug? Ask in Discussions — great for install/config help.
+  - name: 💡 Open-ended idea
+    url: https://github.com/rhybad/gog-vault/discussions/categories/ideas
+    about: Want to float an idea before filing a formal request? Start here.
+  - name: 📖 Troubleshooting guide
+    url: https://github.com/rhybad/gog-vault/blob/main/docs/troubleshooting.md
+    about: Many first-run problems are already answered here.
+  - name: 🔒 Security issue
+    url: https://github.com/rhybad/gog-vault/security/advisories/new
+    about: Please report vulnerabilities privately, not as public issues.

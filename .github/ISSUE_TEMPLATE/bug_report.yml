@@ -1,0 +1,81 @@
+name: 🐛 Bug report
+description: Something isn't working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! This is a hobby project, so clear, reproducible details make a real
+        difference in whether it can be fixed. Please check
+        [Troubleshooting](https://github.com/rhybad/gog-vault/blob/main/docs/troubleshooting.md) and
+        [existing issues](https://github.com/rhybad/gog-vault/issues) first.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before you start
+      options:
+        - label: I searched existing issues and this isn't a duplicate.
+          required: true
+        - label: I read the Troubleshooting guide.
+          required: true
+        - label: I'm on the latest version (or I've noted my version below).
+          required: false
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Your `GV_VERSION` (the tag, or `latest`).
+      placeholder: "v0.1.0 / latest"
+    validations:
+      required: true
+  - type: dropdown
+    id: arch
+    attributes:
+      label: Host architecture
+      options:
+        - amd64 (x86-64)
+        - arm64 (Raspberry Pi, Apple silicon, etc.)
+        - not sure
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Host / OS
+      description: Where you're running it (NAS model, distro, Docker Desktop, …).
+      placeholder: "Synology DS920+ / Ubuntu 24.04 / Unraid 7"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What went wrong, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The exact steps so it can be reproduced.
+      placeholder: |
+        1. Go to '...'
+        2. Click '...'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: "Output of `docker compose logs --tail=200 api worker`. Redact anything sensitive."
+      render: shell
+    validations:
+      required: false
+  - type: checkboxes
+    id: compose-v2
+    attributes:
+      label: Environment
+      options:
+        - label: I'm using Docker Compose v2 (`docker compose`, not `docker-compose`).
+          required: true

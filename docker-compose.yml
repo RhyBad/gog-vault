@@ -1,0 +1,109 @@
+# GOG Vault — self-host stack (public prebuilt images).
+#
+# Pulls the images from the public GitHub Container Registry — no source checkout or build needed.
+# Bring your own always-on server / NAS with Docker + Docker Compose v2. Images are multi-arch
+# (linux/amd64 + linux/arm64).
+#
+#   1.  cp .env.example .env   then edit it (set POSTGRES_PASSWORD + APP_ENCRYPTION_KEY)
+#   2.  docker compose up -d
+#   3.  open http://<your-host>:8080  ->  connect your GOG account  ->  sync your library
+#
+# Pin a release with GV_VERSION=v0.1.0 in .env, or leave it on :latest.
+# Your game backups + archived art live under ARCHIVE_HOST_PATH (default ./archive); Postgres and
+# Redis data are in named volumes. ONLY the web UI port is published — db / redis / api stay on the
+# internal Docker network. The api + worker apply DB migrations automatically on boot.
+name: gog-vault
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-gogvault}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-gogvault}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-gogvault} -d ${POSTGRES_DB:-gogvault}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: ghcr.io/rhybad/gog-vault-api:${GV_VERSION:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-gogvault}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-gogvault}?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      API_PORT: 3000
+      ARCHIVE_PATH: /data/archive
+      APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY:?set APP_ENCRYPTION_KEY in .env (openssl rand -base64 32)}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    expose:
+      - '3000'
+    volumes:
+      # Read-only: the api only streams archived files back out for restore; it never writes them.
+      - ${ARCHIVE_HOST_PATH:-./archive}:/data/archive:ro
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/api/health']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s # first boot runs `prisma migrate deploy`
+
+  worker:
+    image: ghcr.io/rhybad/gog-vault-worker:${GV_VERSION:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-gogvault}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-gogvault}?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      ARCHIVE_PATH: /data/archive
+      # MUST match the api's key (api encrypts GOG tokens at rest, worker decrypts them).
+      APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY:?set APP_ENCRYPTION_KEY in .env (openssl rand -base64 32)}
+      DOWNLOAD_CONCURRENCY: ${DOWNLOAD_CONCURRENCY:-3}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      # Read-write: the worker writes your game backups + archived cover/poster/background art here.
+      - ${ARCHIVE_HOST_PATH:-./archive}:/data/archive
+
+  web:
+    image: ghcr.io/rhybad/gog-vault-web:${GV_VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      - '${WEB_PORT:-8080}:80'
+    depends_on:
+      - api
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:80/ >/dev/null 2>&1 || exit 1']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
+  redis-data:

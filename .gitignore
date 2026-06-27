@@ -1,0 +1,15 @@
+# Local secrets — NEVER commit these
+.env
+.env.*
+!.env.example
+
+# Local backup/archive data if someone runs the stack from a clone
+archive/
+data/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
