@@ -1,0 +1,21 @@
+name: Close stale issues
+on:
+  schedule:
+    - cron: "0 3 * * 1" # Mondays
+permissions:
+  issues: write
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-stale: 21
+          days-before-close: 7
+          only-labels: needs-info
+          stale-issue-label: stale
+          stale-issue-message: >
+            This has been waiting on more info for a while. I'll close it in a week if there's no update —
+            reopen anytime with the details and I'll take a look. Thanks!
+          close-issue-message: >
+            Closing due to inactivity. Happy to reopen with the requested info.
