@@ -39,6 +39,7 @@ tablets too.
 - **Backup & update detection** — download your installers; get told when GOG has a newer build.
 - **Built-in download manager** — watch every backup download live in an Activity **Queue**, see what's
   waiting, follow per-game progress on each cover, and **stop a whole scheduled run** in one click.
+  Optionally **back up several games in parallel** (Settings → General; default 1).
 - **Integrity verify + repair** — checksums your archive and re-fetches anything corrupt or missing.
 - **Restore helper** — stream any archived file back out when you need it.
 - **Scheduler & notifications** — automatic syncs/backups, with webhook alerts.
@@ -137,7 +138,7 @@ Only **two** values are required; everything else has a sane default. Full refer
 | `DB_HOST_PATH`       |    no    |   `./db`    | Host path for the PostgreSQL data dir — small but precious.    |
 | `WEB_PORT`           |    no    |   `8080`    | Host port for the web UI.                                     |
 | `TZ`                 |    no    |    `UTC`    | Timezone schedule cron times run in — set e.g. `Asia/Seoul`.  |
-| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.4.2`) or track `latest`.              |
+| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.5.0`) or track `latest`.              |
 
 ---
 

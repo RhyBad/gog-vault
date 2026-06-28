@@ -7,7 +7,9 @@ Once the stack is up and you've **connected your GOG account** (see
 
 ## Connect & stay connected
 
-- **Connect GOG** signs you in through a guided flow and stores your tokens **encrypted at rest**.
+- **Connect GOG** signs you in through a guided two-step flow: open the GOG sign-in page and log in,
+  then — because that page looks blank and shows no code — **copy its URL from the address bar and
+  paste it back**. Tokens are stored **encrypted at rest**.
 - Tokens refresh automatically. If a session truly can't be renewed, the UI shows a clear
   **"re-authentication needed"** state — just reconnect. Your GOG username is shown once connected.
 
@@ -26,6 +28,8 @@ Once the stack is up and you've **connected your GOG account** (see
 - **Update detection** flags when GOG has a newer build than your local copy, so you can re-grab it.
 - **Scope filters** (per game or globally) let you choose platforms / languages / content types so you
   only download what you want.
+- **Parallel downloads** (Settings → General) back up several games at once — default **1** (one at a
+  time); raise it (up to 4) only on SSD/fast storage, since parallel writes can slow a single disk.
 
 ## Verify & repair
 
@@ -67,6 +71,7 @@ Once the stack is up and you've **connected your GOG account** (see
 - **Theme** — 7 looks (a flat _Classic_ plus six chamfered palettes); your choice follows you across devices.
 - **Custom background** — upload an image to sit behind the main content area, with a dim slider so text
   stays readable.
+- **Parallel downloads** — how many games back up at once (1–4, default 1).
 - Schedules, scope defaults, notification webhooks, and connection management all live here.
 
 ## Tips

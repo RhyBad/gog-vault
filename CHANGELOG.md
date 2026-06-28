@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > ⚠️ **Beta / pre-release (v0.x).** GOG Vault is still early and changing fast, and updates may include
 > **one-way database migrations**. Back up before upgrading — see [Updating](docs/updating.md).
 
+## [0.5.0] - 2026-06-28
+
+### Added
+
+- **Parallel downloads — back up multiple games at once.** A new Settings → General control (1–4,
+  default 1) sets how many games download at once; raise it only on SSD/fast storage. Repair and
+  verify still run one at a time.
+
+### Changed
+
+- **Clearer, unified GOG connect / re-authenticate flow.** Onboarding and the sidebar now share one
+  dialog that spells out the easy-to-miss step: after you sign in, copy the address-bar URL and paste
+  it back (the page itself shows no code).
+
+### Fixed
+
+- **Activity Queue action buttons (e.g. "Cancel run") are no longer clipped** in any theme or screen
+  width.
+- **Destructive confirm buttons (Disconnect, delete) now show as solid red in the Notch themes**
+  instead of a neutral grey.
+- **The Disconnect dialog's text no longer has awkward gaps or broken line wraps**, and reads more
+  clearly.
+
 ## [0.4.2] - 2026-06-28
 
 ### Added
