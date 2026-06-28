@@ -36,9 +36,17 @@ Both should print a version. If `docker compose version` errors, install the Com
 mkdir gog-vault && cd gog-vault
 curl -O https://raw.githubusercontent.com/rhybad/gog-vault/main/docker-compose.yml
 curl -O https://raw.githubusercontent.com/rhybad/gog-vault/main/.env.example
+
+# Create the storage folders now, so they're owned by your user (not root):
+mkdir archive db
 ```
 
 (No `curl`? Just download those two files from this repo and put them in a folder.)
+
+> 📁 `archive` and `db` match the default `ARCHIVE_HOST_PATH=./archive` and `DB_HOST_PATH=./db`. Creating
+> them yourself up front means Docker doesn't create them as `root` on first run — which is what avoids
+> the classic "permission denied writing backups" snag. If you point either path somewhere else in step 4
+> (a big disk or NAS share), create **that** folder instead.
 
 ## 4. Create your `.env`
 
@@ -57,8 +65,14 @@ Open `.env` in any text editor and set the **two required values**:
 
   Copy the whole output as the value (e.g. `APP_ENCRYPTION_KEY=Yl3...=`).
 
-Optionally point **`ARCHIVE_HOST_PATH`** at a big disk or NAS share (default is `./archive` next to the
-compose file). Full list of settings: [Configuration](configuration.md).
+Optionally point **`ARCHIVE_HOST_PATH`** (your backups + art) and **`DB_HOST_PATH`** (the database) at a
+big disk or NAS share — defaults are `./archive` and `./db`, created next to the compose file. Full list
+of settings: [Configuration](configuration.md).
+
+> 📁 You created `./archive` and `./db` back in step 3, so they're owned by you. If instead you point
+> either at a **NAS share or a custom path**, make sure that path **exists and is writable by Docker**, or
+> the worker won't be able to save backups. See
+> [Permission denied writing backups](troubleshooting.md#permission-denied-writing-backups) if you hit it.
 
 > ⚠️ Keep `.env` private and never commit it — it holds your secrets.
 
