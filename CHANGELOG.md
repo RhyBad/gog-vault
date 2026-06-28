@@ -8,6 +8,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > ⚠️ **Beta / pre-release (v0.x).** GOG Vault is still early and changing fast, and updates may include
 > **one-way database migrations**. Back up before upgrading — see [Updating](docs/updating.md).
 
+## [0.4.2] - 2026-06-28
+
+### Added
+
+- **Schedule times now run in your timezone.** A new `TZ` setting (default `UTC`) controls the zone
+  your schedule's cron times are interpreted in — set `TZ=Asia/Seoul` and `0 3 * * *` fires at 03:00
+  local, matching the Schedule card's "Next run" wall-clock instead of firing in UTC. It's documented
+  in `.env.example`; works on the existing images (no rebuild needed).
+
+### Fixed
+
+- **The scheduled-run progress bar in the Activity Queue now matches its "X of Y" label.** The bar was
+  driven by an internal phase split (sync = 0–50%, backup = 50–100%), so it jumped to ~50% the instant
+  backup started and read ~51% at game 2 of 59 — contradicting the count beside it. It now tracks
+  games-done (game 2/59 → ~3%), and shows an indeterminate bar during the brief sync precursor.
+- **Activity Queue per-game rows no longer overlap in non-Korean languages.** The status badge and
+  Stop/Remove button tracks were sized for the short Korean labels, so a longer translation (e.g.
+  "Remove") could overflow and overlap the status badge — both tracks are now widened and their
+  contents clip within their own column.
+- **Restore popup file list restyled.** The per-row download button now renders correctly (icon no
+  longer vanishes, label centered) as a design-system button, the dead per-row "Copy path" button was
+  removed, every cell stays inside its track at any text length, and the full file name shows on hover.
+- **Overview "Recent activity" now matches the Activity page design.** The rows were rebuilt on the
+  same shared building blocks (type tags, status pills) so the two surfaces read as one design, and the
+  missing "Sync + Backup" type label was added (no more raw enum text).
+
+## [0.4.1] - 2026-06-28
+
+### Added
+
+- **Collection packs now show a backup-status chip derived from their owned items** — a pack reads as
+  Backed up / Partial / Update available / Corrupt based on the games and DLC it bundles, and the chip
+  updates live as those items finish backing up.
+
+### Changed
+
+- **A faster, lighter web app.** A batch of performance improvements: the UI font now loads as small
+  on-demand subsets instead of one ~2 MB file; text and JSON responses are gzip-compressed and hashed
+  assets are cached immutably; the Library grid no longer re-renders every card on each
+  download-progress tick; rapid background refreshes are coalesced into one; and the worker throttles
+  download-progress updates — together making the dashboard quicker to load and smoother while a backup
+  is running.
+- **The Library page no longer shows a separate scheduled-run progress banner.** The per-game cover-card
+  progress bars and the Activity Queue already show a scheduled run's progress, so the redundant banner
+  was removed.
+- **Faster Docker image rebuilds from source** — the build now reuses the cached dependency-install and
+  Prisma-client-generate layers when only application code changes (relevant only if you build the
+  images yourself; the published images are unaffected).
+
+### Fixed
+
+- **Verify and Repair on the Integrity page now show their result.** Like the game-detail popup, the
+  Integrity page now surfaces a result banner after a check — the verify counts (ok / corrupt / missing)
+  or the backup·repair roll-up — instead of running silently with no visible outcome.
+
+### Removed
+
+- **The non-functional "Concurrent downloads" setting** has been removed. It was adjustable but had no
+  effect — backups always run one at a time (a deliberate courtesy to GOG's servers) — so it only caused
+  confusion. The underlying database column was dropped via a migration applied automatically on upgrade.
+
 ## [0.4.0] - 2026-06-28
 
 ### Added

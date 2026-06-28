@@ -42,6 +42,9 @@ Once the stack is up and you've **connected your GOG account** (see
 
 - Set up **automatic syncs/backups** on a schedule under **Settings**, with a run **history** so you can
   see what happened.
+- Schedule times run in the container's timezone — set **`TZ`** in `.env` (see
+  [Configuration](configuration.md#schedules--time-optional)) so `3 AM` means your local 3 AM, not 3 AM
+  UTC. The default is `UTC`.
 - **Webhook notifications** can alert you (e.g. to Discord/Slack-style endpoints) on completion or failure.
 
 ## Storage insights & activity

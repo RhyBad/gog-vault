@@ -136,7 +136,8 @@ Only **two** values are required; everything else has a sane default. Full refer
 | `ARCHIVE_HOST_PATH`  |    no    | `./archive` | Where your backups + art are written — point at a big disk.   |
 | `DB_HOST_PATH`       |    no    |   `./db`    | Host path for the PostgreSQL data dir — small but precious.    |
 | `WEB_PORT`           |    no    |   `8080`    | Host port for the web UI.                                     |
-| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.4.0`) or track `latest`.              |
+| `TZ`                 |    no    |    `UTC`    | Timezone schedule cron times run in — set e.g. `Asia/Seoul`.  |
+| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.4.2`) or track `latest`.              |
 
 ---
 

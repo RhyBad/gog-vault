@@ -56,8 +56,10 @@ Your proxy is buffering the SSE stream. Disable buffering / raise the timeout on
 
 ### Downloads are slow or stop
 
-GOG throttles per file, and your connection is the ceiling. You can raise `DOWNLOAD_CONCURRENCY` (1–8) in
-`.env`, but very high values won't necessarily help and may trip GOG's throttling.
+GOG throttles per file, and your connection is the ceiling. GOG Vault backs up **one game at a time**
+on purpose (a courtesy to GOG's servers), so there's no concurrency knob to turn up — a stalled download
+usually means GOG-side throttling or a flaky connection. A backup resumes where it left off, so it's safe
+to let it run, or stop and retry it later from the game's detail view.
 
 ### A backup is flagged corrupt / missing
 

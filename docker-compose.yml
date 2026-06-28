@@ -8,7 +8,7 @@
 #   2.  docker compose up -d
 #   3.  open http://<your-host>:8080  ->  connect your GOG account  ->  sync your library
 #
-# Pin a release with GV_VERSION=v0.4.0 in .env, or leave it on :latest.
+# Images track :latest by default; pin a specific release with GV_VERSION=vX.Y.Z in .env if you want.
 # Your game backups + archived art live under ARCHIVE_HOST_PATH (default ./archive); the Postgres
 # data dir lives under DB_HOST_PATH (default ./db); Redis uses a named volume. ONLY the web UI port
 # is published — db / redis / api stay on the internal Docker network. The api + worker apply DB
@@ -57,6 +57,8 @@ services:
       API_PORT: 3000
       ARCHIVE_PATH: /data/archive
       APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY:?set APP_ENCRYPTION_KEY in .env (openssl rand -base64 32)}
+      # Schedule cron times are interpreted in this zone.
+      TZ: ${TZ:-UTC}
     depends_on:
       db:
         condition: service_healthy
@@ -85,7 +87,8 @@ services:
       ARCHIVE_PATH: /data/archive
       # MUST match the api's key (api encrypts GOG tokens at rest, worker decrypts them).
       APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY:?set APP_ENCRYPTION_KEY in .env (openssl rand -base64 32)}
-      DOWNLOAD_CONCURRENCY: ${DOWNLOAD_CONCURRENCY:-3}
+      # Keep in sync with the api so scheduled runs and logs use the same local time.
+      TZ: ${TZ:-UTC}
     depends_on:
       db:
         condition: service_healthy

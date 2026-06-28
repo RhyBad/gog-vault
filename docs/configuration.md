@@ -19,7 +19,7 @@ Only **two** values are required. Everything else has a sensible default.
 
 | Variable     | Default  | What it does                                                                            |
 | ------------ | -------- | --------------------------------------------------------------------------------------- |
-| `GV_VERSION` | `latest` | Which published image tag to run. Pin a release (e.g. `v0.1.0`) or track `latest`.      |
+| `GV_VERSION` | `latest` | Which published image tag to run. Pin a release (e.g. `v0.4.2`) or track `latest`.      |
 | `WEB_PORT`   | `8080`   | Host port for the web UI → `http://<your-host>:<WEB_PORT>`. Only this port is published. |
 
 ## Storage
@@ -36,11 +36,14 @@ Only **two** values are required. Everything else has a sensible default.
 | `POSTGRES_USER` | `gogvault` | Database user (internal).   |
 | `POSTGRES_DB`   | `gogvault` | Database name (internal).   |
 
-## Downloads (optional)
+## Schedules & time (optional)
 
-| Variable               | Default | What it does                                                              |
-| ---------------------- | ------- | ------------------------------------------------------------------------ |
-| `DOWNLOAD_CONCURRENCY` | `3`     | How many files download at once (1–8). GOG also throttles per file.       |
+| Variable | Default | What it does                                                                                                                                                              |
+| -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TZ`     | `UTC`   | Timezone (applied to the api + worker) that your **schedule's cron times are interpreted in**. Set your local zone — e.g. `Asia/Seoul`, `America/New_York`, `Europe/Berlin` — so `0 3 * * *` fires at 3 AM your time, not 3 AM UTC. Takes effect on container restart; no rebuild needed. |
+
+> Backups always run **one at a time** (a deliberate courtesy to GOG's servers), so there's no
+> download-concurrency setting to tune.
 
 ## Advanced (rarely needed)
 
