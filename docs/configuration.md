@@ -19,7 +19,7 @@ Only **two** values are required. Everything else has a sensible default.
 
 | Variable     | Default  | What it does                                                                            |
 | ------------ | -------- | --------------------------------------------------------------------------------------- |
-| `GV_VERSION` | `latest` | Which published image tag to run. Pin a release (e.g. `v0.6.0`) or track `latest`.      |
+| `GV_VERSION` | `latest` | Which published image tag to run. Pin a release (e.g. `v0.7.0`) or track `latest`.      |
 | `WEB_PORT`   | `8080`   | Host port for the web UI → `http://<your-host>:<WEB_PORT>`. Only this port is published. |
 
 ## Storage
