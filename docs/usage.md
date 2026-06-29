@@ -18,7 +18,9 @@ Once the stack is up and you've **connected your GOG account** (see
 - Sync pulls your owned **games, DLC, and packs**. The **Library** is Plex-style:
   - **Grouped** view shows base games with their DLC/extras nested in each game's detail page.
   - **Flat** view (toggle) lists every product.
-  - **Collections** is a separate tab of your GOG packs/bundles, each expandable to what it contains.
+  - **Collections** is a separate tab of your GOG packs/bundles, each expandable to what it
+    contains. A pack that ships its **own** installer/extras (e.g. a GOTY edition) shows a
+    **"Pack files"** tile you can open and back up alongside the bundled games.
 - Each cover shows a **backup-status badge** (and live progress while a backup/verify is running).
 
 ## Back up
@@ -35,7 +37,8 @@ Once the stack is up and you've **connected your GOG account** (see
 
 - The **Integrity** screen checksums your archive against GOG's manifests and shows what's **OK,
   corrupt, or missing**.
-- **One-click repair** re-fetches just the bad/missing pieces — no full re-download.
+- **One-click repair** re-fetches just the bad/missing pieces — including the files a backup that
+  was stopped partway never finished — with no full re-download.
 
 ## Restore
 

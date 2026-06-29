@@ -138,7 +138,7 @@ Only **two** values are required; everything else has a sane default. Full refer
 | `DB_HOST_PATH`       |    no    |   `./db`    | Host path for the PostgreSQL data dir — small but precious.    |
 | `WEB_PORT`           |    no    |   `8080`    | Host port for the web UI.                                     |
 | `TZ`                 |    no    |    `UTC`    | Timezone schedule cron times run in — set e.g. `Asia/Seoul`.  |
-| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.5.0`) or track `latest`.              |
+| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.6.0`) or track `latest`.              |
 
 ---
 

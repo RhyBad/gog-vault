@@ -8,6 +8,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > ⚠️ **Beta / pre-release (v0.x).** GOG Vault is still early and changing fast, and updates may include
 > **one-way database migrations**. Back up before upgrading — see [Updating](docs/updating.md).
 
+## [0.6.0] - 2026-06-29
+
+### Added
+
+- **A pack's own files are now visible and reachable.** Some packs (e.g. a GOTY edition) ship their
+  own installer/extras on top of bundling games — these were easy to miss. The expanded pack now leads
+  with a **"Pack files"** tile that opens the pack's detail view, where its installers and extras are
+  listed.
+
+### Changed
+
+- **A pack's status badge now reflects everything it carries** — its bundled games _and_ its own files
+  — and is shown consistently on both the Collections page and the Library's flat view (previously each
+  screen could show a different badge, and a pack with an un-backed-up own installer could misleadingly
+  read "Backed up").
+
+### Fixed
+
+- **Repair now completes a partially-backed-up game** instead of doing nothing. A backup stopped
+  partway (canceled, or interrupted) left its un-downloaded files invisible to Repair, so clicking
+  Repair finished instantly without fetching anything. Repair now pulls every missing file (and still
+  chunk-repairs corrupted ones), making the game whole.
+- **A stopped/incomplete backup is no longer silently re-marked "Backed up" on the next library
+  sync.** Status is recomputed from every planned file, so an incomplete game correctly stays
+  "Partial" until its missing files are actually downloaded.
+- **Activity reads "Nothing to repair" / "Nothing to back up"** for a run that had nothing to do,
+  instead of a misleading "0/0 files ok".
+
 ## [0.5.0] - 2026-06-28
 
 ### Added
