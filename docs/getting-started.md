@@ -38,7 +38,7 @@ curl -O https://raw.githubusercontent.com/rhybad/gog-vault/main/docker-compose.y
 curl -O https://raw.githubusercontent.com/rhybad/gog-vault/main/.env.example
 
 # Create the storage folders now, so they're owned by your user (not root):
-mkdir archive db
+mkdir -p archive db
 ```
 
 (No `curl`? Just download those two files from this repo and put them in a folder.)
