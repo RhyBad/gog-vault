@@ -22,14 +22,17 @@ local archive of the DRM-free installers and bonus content **you already own**.
 
 ## 📸 Screenshots
 
-A Plex-style dashboard — a library grid with cover art and backup-status badges, a game-detail view with
-nested DLC/extras, and an Integrity (verify/repair) screen. It's responsive, so it works on phones and
-tablets too.
+A Plex-style dashboard for your GOG library — a safety-first home page, a cover-art grid with
+backup-status badges, a game-detail view with nested DLC/extras, and an Integrity (verify/repair)
+screen. It's fully responsive, so it works on phones and tablets too.
 
-| Library | Game detail | Integrity |
-| :-----: | :---------: | :-------: |
-| ![Library](screenshots/library.png) | ![Game detail](screenshots/game-detail.png) | ![Integrity](screenshots/integrity.png) |
+|                       **Overview** — Sync & back up                       |              **Library** — a Plex-style grid               |
+| :-----------------------------------------------------------------------: | :-------------------------------------------------------: |
+| [![Overview](screenshots/overview.png)](screenshots/overview.png)         | [![Library](screenshots/library.png)](screenshots/library.png) |
+|                   **Game detail** — DLC, extras & actions                  |              **Integrity** — verify & repair              |
+| [![Game detail](screenshots/game-detail.png)](screenshots/game-detail.png) | [![Integrity](screenshots/integrity.png)](screenshots/integrity.png) |
 
+<sub>Click any shot to open it full size.</sub>
 
 ---
 
@@ -37,6 +40,8 @@ tablets too.
 
 - **Library sync** — your owned games, DLC, and packs, Plex-style (grouped or flat), with cover art.
 - **Backup & update detection** — download your installers; get told when GOG has a newer build.
+- **One-click "Sync & back up"** — from the Overview, sync and then back up everything that needs it in
+  one go, after a confirm showing the size and game count; watch (or stop) it live in Activity.
 - **Built-in download manager** — watch every backup download live in an Activity **Queue**, see what's
   waiting, follow per-game progress on each cover, and **stop a whole scheduled run** in one click.
   Optionally **back up several games in parallel** (Settings → General; default 1).
@@ -95,12 +100,15 @@ mkdir gog-vault && cd gog-vault
 curl -O https://raw.githubusercontent.com/rhybad/gog-vault/main/docker-compose.yml
 curl -O https://raw.githubusercontent.com/rhybad/gog-vault/main/.env.example
 
-# 2. Create your .env and set the two REQUIRED values
+# 2. Create the data folders the stack bind-mounts, so they're yours (not root-owned by Docker)
+mkdir -p archive db
+
+# 3. Create your .env and set the two REQUIRED values
 cp .env.example .env
 #   POSTGRES_PASSWORD  = any strong value
 #   APP_ENCRYPTION_KEY = run:  openssl rand -base64 32   and paste the output
 
-# 3. Start it
+# 4. Start it
 docker compose up -d
 ```
 
@@ -138,7 +146,7 @@ Only **two** values are required; everything else has a sane default. Full refer
 | `DB_HOST_PATH`       |    no    |   `./db`    | Host path for the PostgreSQL data dir — small but precious.    |
 | `WEB_PORT`           |    no    |   `8080`    | Host port for the web UI.                                     |
 | `TZ`                 |    no    |    `UTC`    | Timezone schedule cron times run in — set e.g. `Asia/Seoul`.  |
-| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.6.0`) or track `latest`.              |
+| `GV_VERSION`         |    no    |  `latest`   | Pin a release (e.g. `v0.7.0`) or track `latest`.              |
 
 ---
 

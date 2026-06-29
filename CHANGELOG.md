@@ -8,6 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > ⚠️ **Beta / pre-release (v0.x).** GOG Vault is still early and changing fast, and updates may include
 > **one-way database migrations**. Back up before upgrading — see [Updating](docs/updating.md).
 
+## [0.7.0] - 2026-06-29
+
+### Added
+
+- **One-click "Sync & back up" on the Overview.** A new primary button syncs your library and then
+  backs up every game that needs it, after a quick confirm showing the estimated download size and game
+  count. It runs in the background with the same live per-game progress as a scheduled run, and you can
+  watch or stop it on the Activity page.
+
+### Changed
+
+- **New installs now default to backing up English only** (the content-language filter default is now
+  English, instead of English + Korean). This only affects fresh installs — existing setups keep the
+  languages they already selected, adjustable anytime in Settings.
+
+### Fixed
+
+- **The "estimated full size" no longer over-counts editions you don't back up.** It used to sum every
+  platform and language GOG offers, so a game sold in many languages was counted several times and the
+  Overview/Storage "archived %" gauge could never reach 100%. It now counts only what your backup scope
+  actually downloads.
+
 ## [0.6.0] - 2026-06-29
 
 ### Added
