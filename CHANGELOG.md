@@ -8,6 +8,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > ⚠️ **Beta / pre-release (v0.x).** GOG Vault is still early and changing fast, and updates may include
 > **one-way database migrations**. Back up before upgrading — see [Updating](docs/updating.md).
 
+## [0.8.0] - 2026-06-30
+
+### Added
+
+- **Filter, sort & search your Library.** A new facet bar lets you narrow the Library by **genre,
+  backup status, type, and platform**, with live result counts. Search now also matches **developer and
+  publisher** (not just the title), and you can sort by **release date** or **most recently backed up**.
+  Your filters and sort are saved in the URL, so a filtered view is bookmarkable and survives a reload.
+  On phones the same filters live in the Filter sheet.
+
+### Fixed
+
+- **A "Sync & back up" run now finishes cleanly.** Packs that only bundle other games — with no files of
+  their own — were stuck "Not backed up" and re-queued on every run, so a run never reached a clean "all
+  backed up" state. They're now treated as having nothing to back up.
+- **Packs whose bonus content GOG won't serve no longer churn.** Some editions (e.g. a GOTY / Deluxe
+  pack) list extras that GOG returns an error for at the pack — the real files live under the base game.
+  These are now marked **Unavailable** and skipped, instead of being retried on every run.
+- **A pack's detail popup now matches its card.** A pack with un-backed-up games inside could show a
+  misleading "Up to date" or block backing those games up. The popup now reflects the whole pack, and a
+  pack's one-click Repair now covers its bundled games too.
+- **New versions show up right after you upgrade.** The app page is no longer cached by the browser, so
+  a reload always loads the version you just deployed.
+
 ## [0.7.0] - 2026-06-29
 
 ### Added

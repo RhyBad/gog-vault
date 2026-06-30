@@ -26,7 +26,7 @@ A Plex-style dashboard for your GOG library — a safety-first home page, a cove
 backup-status badges, a game-detail view with nested DLC/extras, and an Integrity (verify/repair)
 screen. It's fully responsive, so it works on phones and tablets too.
 
-|                       **Overview** — Sync & back up                       |              **Library** — a Plex-style grid               |
+|                       **Overview** — Sync & back up                       |              **Library** — filter, sort & search               |
 | :-----------------------------------------------------------------------: | :-------------------------------------------------------: |
 | [![Overview](screenshots/overview.png)](screenshots/overview.png)         | [![Library](screenshots/library.png)](screenshots/library.png) |
 |                   **Game detail** — DLC, extras & actions                  |              **Integrity** — verify & repair              |
@@ -39,6 +39,8 @@ screen. It's fully responsive, so it works on phones and tablets too.
 ## ✨ What it does
 
 - **Library sync** — your owned games, DLC, and packs, Plex-style (grouped or flat), with cover art.
+- **Filter, sort & search** — narrow the Library by genre, backup status, type, and platform (with live
+  counts), search by title / developer / publisher, and sort by release date or most recently backed up.
 - **Backup & update detection** — download your installers; get told when GOG has a newer build.
 - **One-click "Sync & back up"** — from the Overview, sync and then back up everything that needs it in
   one go, after a confirm showing the size and game count; watch (or stop) it live in Activity.
